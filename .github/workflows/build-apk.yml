@@ -44,6 +44,10 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug --no-daemon
 
+      - name: Check that the Play bundle builds (unsigned)
+        working-directory: android
+        run: ./gradlew bundleRelease --no-daemon
+
       - name: Prepare APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk work-calendar.apk
 
