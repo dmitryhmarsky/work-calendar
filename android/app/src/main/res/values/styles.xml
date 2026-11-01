@@ -8,23 +8,17 @@
         <item name="colorAccent">#007AFF</item>
     </style>
 
-    <!-- Main theme: opaque system bars that follow light/dark, no forced edge-to-edge on Android 15. -->
+    <!-- Main theme: system bars show the app background and follow light/dark icon color. -->
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@color/splashBg</item>
-        <item name="android:statusBarColor">@color/barColor</item>
-        <item name="android:navigationBarColor">@color/barColor</item>
         <item name="android:windowLightStatusBar">@bool/lightBars</item>
         <item name="android:windowLightNavigationBar">@bool/lightBars</item>
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@color/splashBg</item>
-        <item name="android:statusBarColor">@color/barColor</item>
-        <item name="android:navigationBarColor">@color/barColor</item>
         <item name="android:windowLightStatusBar">@bool/lightBars</item>
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>

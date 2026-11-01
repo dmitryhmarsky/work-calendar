@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def appVersionCode = (System.getenv('VERSION_CODE') ?: '1').toInteger()
+def appVersionName = System.getenv('VERSION_NAME') ?: '1.0'
+
 android {
     namespace "com.dmitryhmarsky.workcalendar"
     compileSdk rootProject.ext.compileSdkVersion
@@ -7,8 +10,8 @@ android {
         applicationId "com.dmitryhmarsky.workcalendar"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -24,9 +27,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            // Ключ загрузки для Google Play. Значения приходят из секретов GitHub, в репозитории их нет.
+            if (System.getenv('UPLOAD_KEYSTORE_FILE')) {
+                storeFile file(System.getenv('UPLOAD_KEYSTORE_FILE'))
+                storePassword System.getenv('UPLOAD_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('UPLOAD_KEY_ALIAS')
+                keyPassword System.getenv('UPLOAD_KEY_PASSWORD')
+            }
+        }
     }
     buildTypes {
         release {
+            if (System.getenv('UPLOAD_KEYSTORE_FILE')) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -1,0 +1,88 @@
+name: Release AAB (Google Play)
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Загрузить в Google Play (нужен секрет PLAY_SERVICE_ACCOUNT_JSON). none = только собрать файл"
+        type: choice
+        options: [none, internal, alpha, beta, production]
+        default: none
+      status:
+        description: "Статус релиза. Пока приложение не опубликовано ни на одном треке, нужен draft"
+        type: choice
+        options: [draft, completed]
+        default: draft
+
+permissions:
+  contents: read
+
+jobs:
+  aab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      UPLOAD_KEYSTORE_FILE: ${{ github.workspace }}/upload.keystore
+      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.0.${{ github.run_number }}
+      KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check signing secrets
+        run: |
+          missing=0
+          for v in KEYSTORE_B64 UPLOAD_KEYSTORE_PASSWORD UPLOAD_KEY_ALIAS UPLOAD_KEY_PASSWORD; do
+            if [ -z "${!v}" ]; then echo "::error::Не задан секрет для $v. См. PLAY.md, шаг 2."; missing=1; fi
+          done
+          exit $missing
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: "platforms;android-36 build-tools;36.0.0"
+
+      - name: Restore upload keystore
+        run: echo "$KEYSTORE_B64" | base64 -d > "$UPLOAD_KEYSTORE_FILE"
+
+      - run: npm ci
+      - run: npx cap sync android
+
+      - name: Build signed AAB
+        working-directory: android
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Collect AAB
+        run: cp android/app/build/outputs/bundle/release/app-release.aab work-calendar.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: work-calendar-aab
+          path: work-calendar.aab
+
+      - name: Upload to Google Play
+        if: ${{ inputs.track != 'none' && env.PLAY_JSON != '' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.dmitryhmarsky.workcalendar
+          releaseFiles: work-calendar.aab
+          track: ${{ inputs.track }}
+          status: ${{ inputs.status }}
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$UPLOAD_KEYSTORE_FILE"
