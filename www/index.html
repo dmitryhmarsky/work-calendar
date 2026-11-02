@@ -6,14 +6,15 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Учёт часов">
+<meta name="apple-mobile-web-app-title" content="WorkTime">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>:root{color-scheme:light}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Учёт часов</title>
+<title>WorkTime</title>
 <style>
 /* Layout: translucent sticky nav (prev/next, Неделя|Месяц, настройки), large title, summary card with ring,
    month grid or week rows, bottom sheets for entry and settings. Palette: iOS system colors. Type: system UI stack (SF on Apple). */
@@ -173,6 +174,10 @@ h1{font-size:32px;line-height:1.1;font-weight:800;letter-spacing:-.022em;text-wr
 .btn{width:100%;padding:14px 16px;border-radius:14px;font-weight:600;text-align:center;background:var(--group)}
 .btn:active{opacity:.7}
 .btn.primary{background:var(--accent);color:#fff}
+label.btn{display:block;cursor:pointer}
+.brand{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:20px}
+.brand img{width:48px;height:48px;border-radius:23%;display:block}
+.brand b{font-size:19px;letter-spacing:-.01em}
 .btn.danger{color:var(--red)}
 .gl{font-size:13px;color:var(--fg2);padding:6px 4px 8px;text-transform:uppercase;letter-spacing:.04em;font-weight:600}
 .wds{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:14px}

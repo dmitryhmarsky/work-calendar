@@ -1,6 +1,6 @@
 {
   "appId": "com.dmitryhmarsky.workcalendar",
-  "appName": "Учёт часов",
+  "appName": "WorkTime",
   "webDir": "www",
   "android": {
     "allowMixedContent": false

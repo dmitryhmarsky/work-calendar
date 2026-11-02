@@ -6,12 +6,12 @@
 
 ## Русский (основной)
 
-**Название:** Учёт часов
+**Название:** WorkTime
 
 **Краткое описание:** Календарь рабочих часов: день, неделя, месяц, норма и заработок
 
 **Полное описание:**
-Учёт часов помогает быстро записывать, сколько вы отработали, и видеть итоги за неделю и месяц.
+WorkTime помогает быстро записывать, сколько вы отработали, и видеть итоги за неделю и месяц.
 
 Что умеет:
 • Календарь месяца с часами в каждом дне и цветом по загрузке
@@ -29,12 +29,12 @@
 
 ## English
 
-**Title:** Work Hours
+**Title:** WorkTime
 
 **Short description:** Work hours calendar: day, week, month, daily target and earnings
 
 **Full description:**
-Work Hours lets you log the time you worked in a few taps and see your totals for the week and the month.
+WorkTime lets you log the time you worked in a few taps and see your totals for the week and the month.
 
 Features:
 • Month calendar with hours on every day, colored by workload
@@ -52,12 +52,12 @@ Privacy: your data stays on your phone. No account, no ads, nothing is sent anyw
 
 ## Italiano
 
-**Titolo:** Ore di lavoro
+**Titolo:** WorkTime
 
 **Descrizione breve:** Calendario delle ore: giorno, settimana, mese, obiettivo e guadagno
 
 **Descrizione completa:**
-Ore di lavoro ti permette di registrare quanto hai lavorato in pochi tocchi e di vedere i totali della settimana e del mese.
+WorkTime ti permette di registrare quanto hai lavorato in pochi tocchi e di vedere i totali della settimana e del mese.
 
 Funzioni:
 • Calendario del mese con le ore di ogni giorno, colorato in base al carico
@@ -75,12 +75,12 @@ Privacy: i dati restano sul tuo telefono. Nessun account, nessuna pubblicità, n
 
 ## Українська
 
-**Назва:** Облік годин
+**Назва:** WorkTime
 
 **Короткий опис:** Календар робочих годин: день, тиждень, місяць, норма і заробіток
 
 **Повний опис:**
-Облік годин допомагає швидко записувати, скільки ви відпрацювали, і бачити підсумки за тиждень і місяць.
+WorkTime допомагає швидко записувати, скільки ви відпрацювали, і бачити підсумки за тиждень і місяць.
 
 Можливості:
 • Календар місяця з годинами в кожному дні та кольором за завантаженням

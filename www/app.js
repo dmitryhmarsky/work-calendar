@@ -10,7 +10,7 @@ var REGION_CUR={US:'USD',GB:'GBP',CH:'CHF',PL:'PLN',CZ:'CZK',UA:'UAH',RU:'RUB',T
 
 var D={
 ru:{
-  appTitle:'Учёт часов',uh:'ч',um:'м',
+  appTitle:'WorkTime',uh:'ч',um:'м',
   pw:{one:'рабочий день',few:'рабочих дня',many:'рабочих дней',other:'рабочих дня'},
   prev:'Назад',next:'Вперёд',period:'Период',settings:'Настройки',week:'Неделя',month:'Месяц',today:'Сегодня',
   weekN:'Неделя {n}',wk:'нед',
@@ -30,11 +30,15 @@ ru:{
   copyReport:'Скопировать отчёт: {p}',periodMonth:'месяц',periodWeek:'неделя',repAria:'Текст отчёта',
   clearAll:'Очистить все данные',clearSure:'Нажмите ещё раз, чтобы удалить всё',footer:'Данные хранятся на этом устройстве.',
   language:'Язык',currency:'Валюта',auto:'Как в системе',curNote:'Смена валюты не пересчитывает ставку.',
-  reportTitle:'Учёт часов',reportTotal:'Итого: {x}, дней: {n}',reportNorm:'Норма: {x}',reportEarned:'Заработано: {x}',
-  sample1:'Выезд к клиенту',sample2:'Инвентаризация'
+  reportTitle:'WorkTime',reportTotal:'Итого: {x}, дней: {n}',reportNorm:'Норма: {x}',reportEarned:'Заработано: {x}',
+  sample1:'Выезд к клиенту',sample2:'Инвентаризация',
+  backup:'Резервная копия',backupSave:'Сохранить копию',backupRestore:'Восстановить из файла',
+  backupNote:'Файл копии можно сохранить в Google Drive: выберите Drive в меню «Поделиться». Чтобы вернуть данные, выберите этот файл.',
+  backupShareTitle:'Резервная копия WorkTime',backupSaved:'Файл сохранён',backupFail:'Не удалось сохранить копию',
+  restoreBad:'Это не файл копии приложения',restoreAsk:'Найдено записей: {n}. Заменить текущие данные?',restoreYes:'Заменить',restoreNo:'Отмена',restoreDone:'Данные восстановлены'
 },
 en:{
-  appTitle:'Work Hours',uh:'h',um:'m',
+  appTitle:'WorkTime',uh:'h',um:'m',
   pw:{one:'working day',other:'working days'},
   prev:'Back',next:'Forward',period:'Period',settings:'Settings',week:'Week',month:'Month',today:'Today',
   weekN:'Week {n}',wk:'wk',
@@ -54,11 +58,15 @@ en:{
   copyReport:'Copy report: {p}',periodMonth:'month',periodWeek:'week',repAria:'Report text',
   clearAll:'Delete all data',clearSure:'Tap again to delete everything',footer:'Data is stored on this device.',
   language:'Language',currency:'Currency',auto:'System default',curNote:'Changing the currency does not convert the rate.',
-  reportTitle:'Work hours',reportTotal:'Total: {x}, days: {n}',reportNorm:'Target: {x}',reportEarned:'Earned: {x}',
-  sample1:'Client visit',sample2:'Stocktaking'
+  reportTitle:'WorkTime',reportTotal:'Total: {x}, days: {n}',reportNorm:'Target: {x}',reportEarned:'Earned: {x}',
+  sample1:'Client visit',sample2:'Stocktaking',
+  backup:'Backup',backupSave:'Save backup',backupRestore:'Restore from file',
+  backupNote:'You can save the backup file to Google Drive: pick Drive in the Share menu. To get your data back, choose that file.',
+  backupShareTitle:'WorkTime backup',backupSaved:'File saved',backupFail:'Could not save the backup',
+  restoreBad:'This is not a backup file from this app',restoreAsk:'{n} entries found. Replace the current data?',restoreYes:'Replace',restoreNo:'Cancel',restoreDone:'Data restored'
 },
 it:{
-  appTitle:'Ore di lavoro',uh:'h',um:'min',
+  appTitle:'WorkTime',uh:'h',um:'min',
   pw:{one:'giorno lavorativo',many:'giorni lavorativi',other:'giorni lavorativi'},
   prev:'Indietro',next:'Avanti',period:'Periodo',settings:'Impostazioni',week:'Settimana',month:'Mese',today:'Oggi',
   weekN:'Settimana {n}',wk:'sett.',
@@ -78,11 +86,15 @@ it:{
   copyReport:'Copia report: {p}',periodMonth:'mese',periodWeek:'settimana',repAria:'Testo del report',
   clearAll:'Elimina tutti i dati',clearSure:'Tocca ancora per eliminare tutto',footer:'I dati sono salvati su questo dispositivo.',
   language:'Lingua',currency:'Valuta',auto:'Come il sistema',curNote:'Cambiando valuta la tariffa non viene convertita.',
-  reportTitle:'Ore di lavoro',reportTotal:'Totale: {x}, giorni: {n}',reportNorm:'Obiettivo: {x}',reportEarned:'Guadagno: {x}',
-  sample1:'Visita dal cliente',sample2:'Inventario'
+  reportTitle:'WorkTime',reportTotal:'Totale: {x}, giorni: {n}',reportNorm:'Obiettivo: {x}',reportEarned:'Guadagno: {x}',
+  sample1:'Visita dal cliente',sample2:'Inventario',
+  backup:'Copia di sicurezza',backupSave:'Salva copia',backupRestore:'Ripristina da file',
+  backupNote:'Puoi salvare il file in Google Drive: scegli Drive nel menu Condividi. Per recuperare i dati, scegli quel file.',
+  backupShareTitle:'Copia di WorkTime',backupSaved:'File salvato',backupFail:'Impossibile salvare la copia',
+  restoreBad:'Questo non è un file di copia di questa app',restoreAsk:'Trovate {n} voci. Sostituire i dati attuali?',restoreYes:'Sostituisci',restoreNo:'Annulla',restoreDone:'Dati ripristinati'
 },
 uk:{
-  appTitle:'Облік годин',uh:'год',um:'хв',
+  appTitle:'WorkTime',uh:'год',um:'хв',
   pw:{one:'робочий день',few:'робочі дні',many:'робочих днів',other:'робочого дня'},
   prev:'Назад',next:'Вперед',period:'Період',settings:'Налаштування',week:'Тиждень',month:'Місяць',today:'Сьогодні',
   weekN:'Тиждень {n}',wk:'тиж',
@@ -102,8 +114,12 @@ uk:{
   copyReport:'Скопіювати звіт: {p}',periodMonth:'місяць',periodWeek:'тиждень',repAria:'Текст звіту',
   clearAll:'Видалити всі дані',clearSure:'Натисніть ще раз, щоб видалити все',footer:'Дані зберігаються на цьому пристрої.',
   language:'Мова',currency:'Валюта',auto:'Як у системі',curNote:'Зміна валюти не перераховує ставку.',
-  reportTitle:'Облік годин',reportTotal:'Разом: {x}, днів: {n}',reportNorm:'Норма: {x}',reportEarned:'Зароблено: {x}',
-  sample1:'Виїзд до клієнта',sample2:'Інвентаризація'
+  reportTitle:'WorkTime',reportTotal:'Разом: {x}, днів: {n}',reportNorm:'Норма: {x}',reportEarned:'Зароблено: {x}',
+  sample1:'Виїзд до клієнта',sample2:'Інвентаризація',
+  backup:'Резервна копія',backupSave:'Зберегти копію',backupRestore:'Відновити з файлу',
+  backupNote:'Файл копії можна зберегти на Google Drive: виберіть Drive в меню «Поділитися». Щоб повернути дані, виберіть цей файл.',
+  backupShareTitle:'Резервна копія WorkTime',backupSaved:'Файл збережено',backupFail:'Не вдалося зберегти копію',
+  restoreBad:'Це не файл копії цього застосунку',restoreAsk:'Знайдено записів: {n}. Замінити поточні дані?',restoreYes:'Замінити',restoreNo:'Скасувати',restoreDone:'Дані відновлено'
 }
 };
 
@@ -431,9 +447,14 @@ function settingsHTML(){
   '<div class="group"><label class="frow" for="setNorm"><span>'+esc(t('normPerDay'))+'</span><input id="setNorm" type="number" inputmode="decimal" min="0" max="24" step="0.5" value="'+(s.norm/60)+'"></label>'+
   '<label class="frow" for="setRate"><span>'+esc(t('rate',{c:curSymbol()}))+'</span><input id="setRate" type="number" inputmode="decimal" min="0" step="0.5" placeholder="'+esc(t('rateNone'))+'" value="'+(s.rate>0?s.rate:'')+'"></label></div>'+
   '<div class="gl">'+esc(t('workDays'))+'</div><div class="wds">'+[1,2,3,4,5,6,0].map(function(d){var on=s.days.indexOf(d)>-1;return '<button class="wd'+(on?' on':'')+'" data-wd="'+d+'" aria-pressed="'+on+'">'+esc(wdShort(addDays(new Date(2024,0,1),(d+6)%7)))+'</button>'}).join('')+'</div>'+
-  '<div class="acts"><button class="btn" data-a="copy">'+esc(t('copyReport',{p:state.view==='month'?t('periodMonth'):t('periodWeek')}))+'</button>'+
+  '<div class="gl">'+esc(t('backup'))+'</div><p class="fnote" style="margin-top:0">'+esc(t('backupNote'))+'</p>'+
+  '<div class="acts"><button class="btn" data-a="backup">'+esc(t('backupSave'))+'</button>'+
+  '<label class="btn" for="restoreFile">'+esc(t('backupRestore'))+'</label><input id="restoreFile" type="file" accept="application/json,.json" hidden>'+
+  '<div id="restoreBox"></div></div>'+
+  '<div class="acts" style="margin-top:12px"><button class="btn" data-a="copy">'+esc(t('copyReport',{p:state.view==='month'?t('periodMonth'):t('periodWeek')}))+'</button>'+
   '<textarea id="rep" class="rep" readonly hidden aria-label="'+esc(t('repAria'))+'"></textarea>'+
   '<button class="btn danger" data-a="clearall" id="clr">'+esc(t('clearAll'))+'</button></div>'+
+  '<div class="brand"><img src="icon-192.png" alt="" width="48" height="48"><b>WorkTime</b></div>'+
   '<p class="foot">'+esc(t('footer'))+'</p></div>';
 }
 function reportText(){
@@ -456,6 +477,80 @@ function copyReport(){
       navigator.clipboard.writeText(txt).then(function(){toast(t('copied'))},fallback);
     }else fallback();
   }catch(e){fallback()}
+}
+/* ---------- резервная копия ---------- */
+var pendingRestore=null;
+function backupJSON(){
+  return JSON.stringify({app:'work-calendar',version:1,exportedAt:new Date().toISOString(),entries:store.entries,settings:store.settings},null,2);
+}
+function exportBackup(){
+  var json=backupJSON(),name='worktime-backup-'+key(today())+'.json';
+  var C=window.Capacitor,P=C&&C.Plugins,native=!!(C&&C.isNativePlatform&&C.isNativePlatform());
+  if(native&&P&&P.Filesystem&&P.Share){
+    P.Filesystem.writeFile({path:name,data:json,directory:'CACHE',encoding:'utf8'}).then(function(r){
+      return P.Share.share({title:name,files:[r.uri],dialogTitle:t('backupShareTitle')});
+    }).catch(function(e){if(!/cancel/i.test(String((e&&e.message)||e)))toast(t('backupFail'))});
+    return;
+  }
+  try{
+    var file=new File([json],name,{type:'application/json'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:name}).catch(function(){});return}
+  }catch(e){}
+  try{
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download=name;
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+    toast(t('backupSaved'));
+  }catch(e){toast(t('backupFail'))}
+}
+function cleanBackup(o){
+  if(!o||o.app!=='work-calendar'||!o.entries||typeof o.entries!=='object')return null;
+  var out={entries:{},settings:null},n=0;
+  Object.keys(o.entries).forEach(function(k){
+    var e=o.entries[k];
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||!e||typeof e.min!=='number'||!isFinite(e.min)||e.min<0||e.min>1440)return;
+    var c={min:Math.round(e.min)};
+    if(typeof e.note==='string'&&e.note)c.note=e.note.slice(0,120);
+    if(e.sk===1||e.sk===2)c.sk=e.sk;
+    if(e.mode==='span'&&/^\d{2}:\d{2}$/.test(e.start||'')&&/^\d{2}:\d{2}$/.test(e.end||'')){
+      c.mode='span';c.start=e.start;c.end=e.end;c.brk=Math.max(0,Math.min(600,parseInt(e.brk,10)||0));
+    }
+    out.entries[k]=c;n++;
+  });
+  var s=o.settings||{},cs=store.settings;
+  out.settings={
+    norm:(typeof s.norm==='number'&&s.norm>=0&&s.norm<=1440)?Math.round(s.norm):cs.norm,
+    rate:(typeof s.rate==='number'&&s.rate>=0)?s.rate:cs.rate,
+    days:Array.isArray(s.days)?s.days.filter(function(d){return d===(d|0)&&d>=0&&d<=6}):cs.days,
+    lang:(s.lang==='auto'||D[s.lang])?s.lang:'auto',
+    cur:(s.cur==='auto'||CURS.indexOf(s.cur)>-1)?s.cur:'auto'
+  };
+  out.count=n;
+  return out;
+}
+function onRestoreFile(input){
+  var f=input.files&&input.files[0];input.value='';
+  if(!f)return;
+  var box=$('restoreBox');
+  var r=new FileReader();
+  r.onload=function(){
+    var data=null;
+    try{data=cleanBackup(JSON.parse(String(r.result)))}catch(e){}
+    if(!data){pendingRestore=null;if(box)box.innerHTML='';toast(t('restoreBad'));return}
+    pendingRestore=data;
+    if(box)box.innerHTML='<div class="group"><div class="frow"><span>'+esc(t('restoreAsk',{n:data.count}))+'</span></div></div>'+
+      '<div class="acts"><button class="btn primary" data-a="restoreyes">'+esc(t('restoreYes'))+'</button><button class="btn" data-a="restoreno">'+esc(t('restoreNo'))+'</button></div>';
+  };
+  r.onerror=function(){toast(t('restoreBad'))};
+  r.readAsText(f);
+}
+function applyRestore(){
+  if(!pendingRestore)return;
+  store.entries=pendingRestore.entries;store.settings=pendingRestore.settings;store.sample=false;
+  pendingRestore=null;save();applyLocale();render();
+  if(sheetKind==='settings')sheet.innerHTML=settingsHTML();
+  toast(t('restoreDone'));
 }
 function relocalize(focusId){
   applyLocale();render();
@@ -493,13 +588,16 @@ document.addEventListener('click',function(ev){
     case 'prev':shift(-1);break;
     case 'next':shift(1);break;
     case 'today':state.cursor=today();render();break;
-    case 'settings':openSheet(settingsHTML(),'settings');break;
+    case 'settings':pendingRestore=null;openSheet(settingsHTML(),'settings');break;
     case 'close':closeSheet();break;
     case 'save':if(ed){saveEntry();closeSheet();toast(t('saved'))}break;
     case 'savenext':if(ed){var nk=key(addDays(parseKey(ed.key),1));saveEntry();openEditor(nk);toast(t('saved'))}break;
     case 'del':if(ed){delete store.entries[ed.key];save();render();closeSheet();toast(t('deleted'))}break;
     case 'clearsample':store.entries={};store.sample=false;save();render();break;
     case 'copy':copyReport();break;
+    case 'backup':exportBackup();break;
+    case 'restoreyes':applyRestore();break;
+    case 'restoreno':pendingRestore=null;var rb=$('restoreBox');if(rb)rb.innerHTML='';break;
     case 'clearall':
       if(el.dataset.sure){store.entries={};store.sample=false;save();render();closeSheet();toast(t('cleared'))}
       else{el.dataset.sure='1';el.textContent=t('clearSure');setTimeout(function(){if(el.isConnected){delete el.dataset.sure;el.textContent=t('clearAll')}},4000)}
@@ -521,6 +619,7 @@ document.addEventListener('input',function(ev){
 });
 document.addEventListener('change',function(ev){
   var id=ev.target.id,v=ev.target.value;
+  if(id==='restoreFile'){onRestoreFile(ev.target);return}
   if(id==='setLang'){store.settings.lang=v;save();relocalize('setLang')}
   else if(id==='setCur'){store.settings.cur=v;save();relocalize('setCur')}
 });
