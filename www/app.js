@@ -35,7 +35,10 @@ ru:{
   backup:'Резервная копия',backupSave:'Сохранить копию',backupRestore:'Восстановить из файла',
   backupNote:'Файл копии можно сохранить в Google Drive: выберите Drive в меню «Поделиться». Чтобы вернуть данные, выберите этот файл.',
   backupShareTitle:'Резервная копия WorkTime',backupSaved:'Файл сохранён',backupFail:'Не удалось сохранить копию',
-  restoreBad:'Это не файл копии приложения',restoreAsk:'Найдено записей: {n}. Заменить текущие данные?',restoreYes:'Заменить',restoreNo:'Отмена',restoreDone:'Данные восстановлены'
+  restoreBad:'Это не файл копии приложения',restoreAsk:'Найдено записей: {n}. Заменить текущие данные?',restoreYes:'Заменить',restoreNo:'Отмена',restoreDone:'Данные восстановлены',
+  backupSaveDrive:'Сохранить в Google Drive',backupSaveIcloud:'Сохранить в iCloud',
+  backupNoteDrive:'В открывшемся меню выберите «Диск» (Google Drive). Чтобы вернуть данные, нажмите «Восстановить из файла» и выберите сохранённый файл.',
+  backupNoteIcloud:'В открывшемся меню выберите «Сохранить в Файлы» и папку iCloud Drive. Чтобы вернуть данные, нажмите «Восстановить из файла» и выберите сохранённый файл.'
 },
 en:{
   appTitle:'WorkTime',uh:'h',um:'m',
@@ -63,7 +66,10 @@ en:{
   backup:'Backup',backupSave:'Save backup',backupRestore:'Restore from file',
   backupNote:'You can save the backup file to Google Drive: pick Drive in the Share menu. To get your data back, choose that file.',
   backupShareTitle:'WorkTime backup',backupSaved:'File saved',backupFail:'Could not save the backup',
-  restoreBad:'This is not a backup file from this app',restoreAsk:'{n} entries found. Replace the current data?',restoreYes:'Replace',restoreNo:'Cancel',restoreDone:'Data restored'
+  restoreBad:'This is not a backup file from this app',restoreAsk:'{n} entries found. Replace the current data?',restoreYes:'Replace',restoreNo:'Cancel',restoreDone:'Data restored',
+  backupSaveDrive:'Save to Google Drive',backupSaveIcloud:'Save to iCloud',
+  backupNoteDrive:'In the menu that opens, choose Drive (Google Drive). To get your data back, tap "Restore from file" and pick the saved file.',
+  backupNoteIcloud:'In the menu that opens, choose "Save to Files" and the iCloud Drive folder. To get your data back, tap "Restore from file" and pick the saved file.'
 },
 it:{
   appTitle:'WorkTime',uh:'h',um:'min',
@@ -91,7 +97,10 @@ it:{
   backup:'Copia di sicurezza',backupSave:'Salva copia',backupRestore:'Ripristina da file',
   backupNote:'Puoi salvare il file in Google Drive: scegli Drive nel menu Condividi. Per recuperare i dati, scegli quel file.',
   backupShareTitle:'Copia di WorkTime',backupSaved:'File salvato',backupFail:'Impossibile salvare la copia',
-  restoreBad:'Questo non è un file di copia di questa app',restoreAsk:'Trovate {n} voci. Sostituire i dati attuali?',restoreYes:'Sostituisci',restoreNo:'Annulla',restoreDone:'Dati ripristinati'
+  restoreBad:'Questo non è un file di copia di questa app',restoreAsk:'Trovate {n} voci. Sostituire i dati attuali?',restoreYes:'Sostituisci',restoreNo:'Annulla',restoreDone:'Dati ripristinati',
+  backupSaveDrive:'Salva su Google Drive',backupSaveIcloud:'Salva su iCloud',
+  backupNoteDrive:'Nel menu che si apre scegli Drive (Google Drive). Per recuperare i dati, tocca "Ripristina da file" e scegli il file salvato.',
+  backupNoteIcloud:'Nel menu che si apre scegli "Salva su File" e la cartella iCloud Drive. Per recuperare i dati, tocca "Ripristina da file" e scegli il file salvato.'
 },
 uk:{
   appTitle:'WorkTime',uh:'год',um:'хв',
@@ -119,7 +128,10 @@ uk:{
   backup:'Резервна копія',backupSave:'Зберегти копію',backupRestore:'Відновити з файлу',
   backupNote:'Файл копії можна зберегти на Google Drive: виберіть Drive в меню «Поділитися». Щоб повернути дані, виберіть цей файл.',
   backupShareTitle:'Резервна копія WorkTime',backupSaved:'Файл збережено',backupFail:'Не вдалося зберегти копію',
-  restoreBad:'Це не файл копії цього застосунку',restoreAsk:'Знайдено записів: {n}. Замінити поточні дані?',restoreYes:'Замінити',restoreNo:'Скасувати',restoreDone:'Дані відновлено'
+  restoreBad:'Це не файл копії цього застосунку',restoreAsk:'Знайдено записів: {n}. Замінити поточні дані?',restoreYes:'Замінити',restoreNo:'Скасувати',restoreDone:'Дані відновлено',
+  backupSaveDrive:'Зберегти на Google Drive',backupSaveIcloud:'Зберегти в iCloud',
+  backupNoteDrive:'У меню, що відкриється, виберіть «Диск» (Google Drive). Щоб повернути дані, натисніть «Відновити з файлу» й виберіть збережений файл.',
+  backupNoteIcloud:'У меню, що відкриється, виберіть «Зберегти у Файли» й теку iCloud Drive. Щоб повернути дані, натисніть «Відновити з файлу» й виберіть збережений файл.'
 }
 };
 
@@ -427,6 +439,8 @@ function saveEntry(){
 }
 
 /* ---------- настройки ---------- */
+function platform(){try{var C=window.Capacitor;return(C&&C.getPlatform)?C.getPlatform():'web'}catch(e){return 'web'}}
+function bk(part){var p=platform();return t('backup'+part+(p==='android'?'Drive':p==='ios'?'Icloud':''))}
 function langOptions(){
   var h='<option value="auto"'+(store.settings.lang==='auto'?' selected':'')+'>'+esc(t('auto'))+'</option>';
   LANGS.forEach(function(l){h+='<option value="'+l[0]+'"'+(store.settings.lang===l[0]?' selected':'')+'>'+esc(l[1])+'</option>'});
@@ -447,8 +461,8 @@ function settingsHTML(){
   '<div class="group"><label class="frow" for="setNorm"><span>'+esc(t('normPerDay'))+'</span><input id="setNorm" type="number" inputmode="decimal" min="0" max="24" step="0.5" value="'+(s.norm/60)+'"></label>'+
   '<label class="frow" for="setRate"><span>'+esc(t('rate',{c:curSymbol()}))+'</span><input id="setRate" type="number" inputmode="decimal" min="0" step="0.5" placeholder="'+esc(t('rateNone'))+'" value="'+(s.rate>0?s.rate:'')+'"></label></div>'+
   '<div class="gl">'+esc(t('workDays'))+'</div><div class="wds">'+[1,2,3,4,5,6,0].map(function(d){var on=s.days.indexOf(d)>-1;return '<button class="wd'+(on?' on':'')+'" data-wd="'+d+'" aria-pressed="'+on+'">'+esc(wdShort(addDays(new Date(2024,0,1),(d+6)%7)))+'</button>'}).join('')+'</div>'+
-  '<div class="gl">'+esc(t('backup'))+'</div><p class="fnote" style="margin-top:0">'+esc(t('backupNote'))+'</p>'+
-  '<div class="acts"><button class="btn" data-a="backup">'+esc(t('backupSave'))+'</button>'+
+  '<div class="gl">'+esc(t('backup'))+'</div><p class="fnote" style="margin-top:0">'+esc(bk('Note'))+'</p>'+
+  '<div class="acts"><button class="btn" data-a="backup">'+esc(bk('Save'))+'</button>'+
   '<label class="btn" for="restoreFile">'+esc(t('backupRestore'))+'</label><input id="restoreFile" type="file" accept="application/json,.json" hidden>'+
   '<div id="restoreBox"></div></div>'+
   '<div class="acts" style="margin-top:12px"><button class="btn" data-a="copy">'+esc(t('copyReport',{p:state.view==='month'?t('periodMonth'):t('periodWeek')}))+'</button>'+
