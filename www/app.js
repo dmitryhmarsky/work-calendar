@@ -26,6 +26,7 @@ ru:{
   save:'Сохранить',saveNext:'Сохранить и открыть следующий день',delEntry:'Удалить запись',
   exact:'Ровно по норме',overBy:'Сверх нормы на {x}',underBy:'До нормы {x}',
   saved:'Сохранено',deleted:'Запись удалена',cleared:'Данные удалены',copied:'Отчёт скопирован',selectCopy:'Выделите текст и скопируйте',
+  schedule:'График',schWeek:'По дням недели',schCycle:'Сменный',schOn:'Рабочих дней подряд',schOff:'Выходных подряд',schStart:'Первый рабочий день цикла',schPresets:'Готовые графики',schHint:'Выберите любой день, с которого начался ваш рабочий блок. Дальше график считается сам, в прошлое и в будущее.',schMonth:'Рабочих дней в этом месяце: {n}, норма {x}',
   normPerDay:'Норма в день, часов',rate:'Ставка в час, {c}',rateNone:'не задана',workDays:'Рабочие дни',
   copyReport:'Скопировать отчёт: {p}',periodMonth:'месяц',periodWeek:'неделя',repAria:'Текст отчёта',
   clearAll:'Очистить все данные',clearSure:'Нажмите ещё раз, чтобы удалить всё',footer:'Данные хранятся на этом устройстве.',
@@ -57,6 +58,7 @@ en:{
   save:'Save',saveNext:'Save and open next day',delEntry:'Delete entry',
   exact:'Exactly on target',overBy:'{x} over target',underBy:'{x} to target',
   saved:'Saved',deleted:'Entry deleted',cleared:'Data deleted',copied:'Report copied',selectCopy:'Select the text and copy it',
+  schedule:'Schedule',schWeek:'By weekday',schCycle:'Shifts',schOn:'Days on in a row',schOff:'Days off in a row',schStart:'First working day of a cycle',schPresets:'Common schedules',schHint:'Pick any day your working block started on. The schedule is then worked out automatically, backward and forward.',schMonth:'Working days this month: {n}, target {x}',
   normPerDay:'Daily target, hours',rate:'Hourly rate, {c}',rateNone:'not set',workDays:'Working days',
   copyReport:'Copy report: {p}',periodMonth:'month',periodWeek:'week',repAria:'Report text',
   clearAll:'Delete all data',clearSure:'Tap again to delete everything',footer:'Data is stored on this device.',
@@ -88,6 +90,7 @@ it:{
   save:'Salva',saveNext:'Salva e apri il giorno successivo',delEntry:'Elimina voce',
   exact:'Esattamente come previsto',overBy:'{x} oltre l’obiettivo',underBy:'{x} all’obiettivo',
   saved:'Salvato',deleted:'Voce eliminata',cleared:'Dati eliminati',copied:'Report copiato',selectCopy:'Seleziona il testo e copialo',
+  schedule:'Turni',schWeek:'Per giorni della settimana',schCycle:'A turni',schOn:'Giorni lavorativi di fila',schOff:'Giorni di riposo di fila',schStart:'Primo giorno di lavoro del ciclo',schPresets:'Turni comuni',schHint:'Scegli un giorno qualsiasi in cui è iniziato il tuo blocco di lavoro. Il calendario si calcola da solo, nel passato e nel futuro.',schMonth:'Giorni lavorativi questo mese: {n}, obiettivo {x}',
   normPerDay:'Obiettivo giornaliero, ore',rate:'Tariffa oraria, {c}',rateNone:'non impostata',workDays:'Giorni lavorativi',
   copyReport:'Copia report: {p}',periodMonth:'mese',periodWeek:'settimana',repAria:'Testo del report',
   clearAll:'Elimina tutti i dati',clearSure:'Tocca ancora per eliminare tutto',footer:'I dati sono salvati su questo dispositivo.',
@@ -119,6 +122,7 @@ uk:{
   save:'Зберегти',saveNext:'Зберегти й відкрити наступний день',delEntry:'Видалити запис',
   exact:'Рівно за нормою',overBy:'Понад норму на {x}',underBy:'До норми {x}',
   saved:'Збережено',deleted:'Запис видалено',cleared:'Дані видалено',copied:'Звіт скопійовано',selectCopy:'Виділіть текст і скопіюйте',
+  schedule:'Графік',schWeek:'За днями тижня',schCycle:'Змінний',schOn:'Робочих днів поспіль',schOff:'Вихідних поспіль',schStart:'Перший робочий день циклу',schPresets:'Готові графіки',schHint:'Виберіть будь-який день, з якого почався ваш робочий блок. Далі графік рахується сам, у минуле й майбутнє.',schMonth:'Робочих днів цього місяця: {n}, норма {x}',
   normPerDay:'Норма на день, годин',rate:'Ставка за годину, {c}',rateNone:'не задано',workDays:'Робочі дні',
   copyReport:'Скопіювати звіт: {p}',periodMonth:'місяць',periodWeek:'тиждень',repAria:'Текст звіту',
   clearAll:'Видалити всі дані',clearSure:'Натисніть ще раз, щоб видалити все',footer:'Дані зберігаються на цьому пристрої.',
@@ -135,7 +139,7 @@ uk:{
 }
 };
 
-var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],lang:'auto',cur:'auto'},sample:false};
+var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:''},lang:'auto',cur:'auto'},sample:false};
 var persist=true;
 var state={view:'month',cursor:today()};
 var ed=null, sheetKind=null, closeTimer=null, toastTimer=null;
@@ -218,7 +222,21 @@ function curName(code){
   try{var n=new Intl.DisplayNames([loc],{type:'currency'}).of(code);return n?cap(n):code}catch(e){return code}
 }
 function isoWeek(d){var x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));var day=x.getUTCDay()||7;x.setUTCDate(x.getUTCDate()+4-day);var y0=new Date(Date.UTC(x.getUTCFullYear(),0,1));return Math.ceil(((x-y0)/864e5+1)/7)}
-function isWork(d){return store.settings.days.indexOf(d.getDay())>-1}
+function cleanSched(x){
+  x=x||{};
+  var on=parseInt(x.on,10),off=parseInt(x.off,10);
+  return{mode:x.mode==='cycle'?'cycle':'week',on:on>=1&&on<=31?on:3,off:off>=1&&off<=31?off:3,start:/^\d{4}-\d{2}-\d{2}$/.test(x.start||'')?x.start:''};
+}
+function dayNo(d){return Math.round(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
+function isWork(d){
+  var sc=store.settings.sched;
+  if(sc&&sc.mode==='cycle'&&sc.start){
+    var n=(dayNo(d)-dayNo(parseKey(sc.start)))%(sc.on+sc.off);
+    if(n<0)n+=sc.on+sc.off;
+    return n<sc.on;
+  }
+  return store.settings.days.indexOf(d.getDay())>-1;
+}
 function workDays(a,b){var c=0;for(var d=a;d<=b;d=addDays(d,1))if(isWork(d))c++;return c}
 function stats(a,b){var total=0,days=0;for(var d=a;d<=b;d=addDays(d,1)){var e=store.entries[key(d)];if(e&&e.min>0){total+=e.min;days++}}return{total:total,days:days,goal:workDays(a,b)*store.settings.norm}}
 function noteOf(e){return e?(e.note||(e.sk?t('sample'+e.sk):'')):''}
@@ -250,6 +268,7 @@ function load(){
         norm:isFinite(s.norm)?s.norm:480,
         rate:isFinite(s.rate)?s.rate:0,
         days:Array.isArray(s.days)?s.days:[1,2,3,4,5],
+        sched:cleanSched(s.sched),
         lang:s.lang||'auto',
         cur:s.cur||'auto'
       };
@@ -451,6 +470,26 @@ function curOptions(){
   CURS.forEach(function(c){h+='<option value="'+c+'"'+(store.settings.cur===c?' selected':'')+'>'+esc(c+' · '+curName(c))+'</option>'});
   return h;
 }
+function schedPrev(){
+  var c=period().from,m=state.cursor,a=new Date(m.getFullYear(),m.getMonth(),1),b=new Date(m.getFullYear(),m.getMonth()+1,0);
+  var n=workDays(a,b);return t('schMonth',{n:n,x:fmtLong(n*store.settings.norm)});
+}
+function schedHTML(){
+  var sc=store.settings.sched,cy=sc.mode==='cycle';
+  var h='<div class="gl">'+esc(t('schedule'))+'</div>'+
+  '<div class="seg wide"><button data-schmode="week" aria-pressed="'+!cy+'">'+esc(t('schWeek'))+'</button><button data-schmode="cycle" aria-pressed="'+cy+'">'+esc(t('schCycle'))+'</button></div>';
+  if(cy){
+    h+='<div class="chips">'+['2/2','3/3','4/2','5/2','1/2','7/7'].map(function(p){var q=p.split('/');var on=sc.on==q[0]&&sc.off==q[1];return '<button class="chip'+(on?' on':'')+'" data-sch="'+p+'" aria-pressed="'+on+'">'+p+'</button>'}).join('')+'</div>'+
+    '<div class="group"><label class="frow" for="setOn"><span>'+esc(t('schOn'))+'</span><input id="setOn" type="number" inputmode="numeric" min="1" max="31" step="1" value="'+sc.on+'"></label>'+
+    '<label class="frow" for="setOff"><span>'+esc(t('schOff'))+'</span><input id="setOff" type="number" inputmode="numeric" min="1" max="31" step="1" value="'+sc.off+'"></label>'+
+    '<label class="frow" for="setStart"><span>'+esc(t('schStart'))+'</span><input id="setStart" type="date" value="'+esc(sc.start)+'"></label></div>'+
+    '<div class="fnote">'+esc(t('schHint'))+'</div>';
+  }
+  return h+'<div class="fnote" id="schPrev" style="margin-top:0">'+esc(schedPrev())+'</div>';
+}
+function weekdaysHTML(s){
+  return '<div class="gl">'+esc(t('workDays'))+'</div><div class="wds">'+[1,2,3,4,5,6,0].map(function(d){var on=s.days.indexOf(d)>-1;return '<button class="wd'+(on?' on':'')+'" data-wd="'+d+'" aria-pressed="'+on+'">'+esc(wdShort(addDays(new Date(2024,0,1),(d+6)%7)))+'</button>'}).join('')+'</div>';
+}
 function settingsHTML(){
   var s=store.settings;
   return '<div class="sheet-in"><div class="grab"></div>'+
@@ -460,7 +499,7 @@ function settingsHTML(){
   '<div class="fnote">'+esc(t('curNote'))+'</div>'+
   '<div class="group"><label class="frow" for="setNorm"><span>'+esc(t('normPerDay'))+'</span><input id="setNorm" type="number" inputmode="decimal" min="0" max="24" step="0.5" value="'+(s.norm/60)+'"></label>'+
   '<label class="frow" for="setRate"><span>'+esc(t('rate',{c:curSymbol()}))+'</span><input id="setRate" type="number" inputmode="decimal" min="0" step="0.5" placeholder="'+esc(t('rateNone'))+'" value="'+(s.rate>0?s.rate:'')+'"></label></div>'+
-  '<div class="gl">'+esc(t('workDays'))+'</div><div class="wds">'+[1,2,3,4,5,6,0].map(function(d){var on=s.days.indexOf(d)>-1;return '<button class="wd'+(on?' on':'')+'" data-wd="'+d+'" aria-pressed="'+on+'">'+esc(wdShort(addDays(new Date(2024,0,1),(d+6)%7)))+'</button>'}).join('')+'</div>'+
+  schedHTML()+(s.sched.mode==='cycle'?'':weekdaysHTML(s))+
   '<div class="gl">'+esc(t('backup'))+'</div><p class="fnote" style="margin-top:0">'+esc(bk('Note'))+'</p>'+
   '<div class="acts"><button class="btn" data-a="backup">'+esc(bk('Save'))+'</button>'+
   '<label class="btn" for="restoreFile">'+esc(t('backupRestore'))+'</label><input id="restoreFile" type="file" accept="application/json,.json" hidden>'+
@@ -537,6 +576,7 @@ function cleanBackup(o){
     norm:(typeof s.norm==='number'&&s.norm>=0&&s.norm<=1440)?Math.round(s.norm):cs.norm,
     rate:(typeof s.rate==='number'&&s.rate>=0)?s.rate:cs.rate,
     days:Array.isArray(s.days)?s.days.filter(function(d){return d===(d|0)&&d>=0&&d<=6}):cs.days,
+    sched:s.sched?cleanSched(s.sched):cs.sched,
     lang:(s.lang==='auto'||D[s.lang])?s.lang:'auto',
     cur:(s.cur==='auto'||CURS.indexOf(s.cur)>-1)?s.cur:'auto'
   };
@@ -576,7 +616,7 @@ function relocalize(focusId){
 
 /* ---------- события ---------- */
 document.addEventListener('click',function(ev){
-  var el=ev.target.closest('[data-a],[data-day],[data-week],[data-view],[data-step],[data-preset],[data-mode],[data-wd]');
+  var el=ev.target.closest('[data-a],[data-day],[data-week],[data-view],[data-step],[data-preset],[data-mode],[data-wd],[data-schmode],[data-sch]');
   if(!el)return;
   var ds=el.dataset;
   if(ds.view){
@@ -592,6 +632,15 @@ document.addEventListener('click',function(ev){
   if(ds.step&&ed){ed.min=Math.max(0,Math.min(1440,ed.min+Number(ds.step)));updateEditor();return}
   if(ds.preset&&ed){ed.min=Number(ds.preset)*60;updateEditor();return}
   if(ds.mode&&ed){ed.mode=ds.mode;updateEditor();return}
+  if(ds.schmode){
+    var sc=store.settings.sched;sc.mode=ds.schmode;
+    if(sc.mode==='cycle'&&!sc.start)sc.start=key(today());
+    save();render();sheet.innerHTML=settingsHTML();return;
+  }
+  if(ds.sch){
+    var q=ds.sch.split('/'),sc2=store.settings.sched;sc2.mode='cycle';sc2.on=+q[0];sc2.off=+q[1];if(!sc2.start)sc2.start=key(today());
+    save();render();sheet.innerHTML=settingsHTML();return;
+  }
   if(ds.wd!==undefined){
     var w=Number(ds.wd),a=store.settings.days,i=a.indexOf(w);
     if(i>-1)a.splice(i,1);else a.push(w);
@@ -628,7 +677,14 @@ document.addEventListener('input',function(ev){
     else return;
     updateEditor();return;
   }
-  if(id==='setNorm'){var n=parseFloat(String(v).replace(',','.'));if(isFinite(n)&&n>=0&&n<=24){store.settings.norm=Math.round(n*60);save();render()}}
+  if(id==='setNorm'){var n=parseFloat(String(v).replace(',','.'));if(isFinite(n)&&n>=0&&n<=24){store.settings.norm=Math.round(n*60);save();render();var pv3=$('schPrev');if(pv3)pv3.textContent=schedPrev()}}
+  else if(id==='setOn'||id==='setOff'){
+    var k=parseInt(v,10);
+    if(k>=1&&k<=31){store.settings.sched[id==='setOn'?'on':'off']=k;save();render();var pv=$('schPrev');if(pv)pv.textContent=schedPrev()}
+  }
+  else if(id==='setStart'){
+    if(/^\d{4}-\d{2}-\d{2}$/.test(v)){store.settings.sched.start=v;save();render();var pv2=$('schPrev');if(pv2)pv2.textContent=schedPrev()}
+  }
   else if(id==='setRate'){var r=parseFloat(String(v).replace(',','.'));store.settings.rate=isFinite(r)&&r>0?r:0;save();render()}
 });
 document.addEventListener('change',function(ev){
