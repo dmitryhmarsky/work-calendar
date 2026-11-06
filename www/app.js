@@ -23,6 +23,7 @@ ru:{
   hint:'Нажмите на день, чтобы ввести часы.',
   cancel:'Отмена',done:'Готово',inputMode:'Способ ввода',modeDur:'Длительность',modeSpan:'Начало и конец',
   start:'Начало',end:'Конец',brk:'Перерыв, минут',notePh:'Заметка (необязательно)',
+  dayType:'День',dtAuto:'По графику',dtWork:'Рабочий',dtOff:'Выходной',dtHint:'Отпуск, больничный или обмен сменой: отметьте день вручную, и норма пересчитается.',
   save:'Сохранить',saveNext:'Сохранить и открыть следующий день',delEntry:'Удалить запись',
   exact:'Ровно по норме',overBy:'Сверх нормы на {x}',underBy:'До нормы {x}',
   saved:'Сохранено',deleted:'Запись удалена',cleared:'Данные удалены',copied:'Отчёт скопирован',selectCopy:'Выделите текст и скопируйте',
@@ -55,6 +56,7 @@ en:{
   hint:'Tap a day to enter hours.',
   cancel:'Cancel',done:'Done',inputMode:'Input method',modeDur:'Duration',modeSpan:'Start and end',
   start:'Start',end:'End',brk:'Break, minutes',notePh:'Note (optional)',
+  dayType:'Day',dtAuto:'By schedule',dtWork:'Working',dtOff:'Day off',dtHint:'Vacation, sick day or a swapped shift: mark the day by hand and the target is recalculated.',
   save:'Save',saveNext:'Save and open next day',delEntry:'Delete entry',
   exact:'Exactly on target',overBy:'{x} over target',underBy:'{x} to target',
   saved:'Saved',deleted:'Entry deleted',cleared:'Data deleted',copied:'Report copied',selectCopy:'Select the text and copy it',
@@ -87,6 +89,7 @@ it:{
   hint:'Tocca un giorno per inserire le ore.',
   cancel:'Annulla',done:'Fine',inputMode:'Modalità di inserimento',modeDur:'Durata',modeSpan:'Inizio e fine',
   start:'Inizio',end:'Fine',brk:'Pausa, minuti',notePh:'Nota (facoltativa)',
+  dayType:'Giorno',dtAuto:'Da turno',dtWork:'Lavorativo',dtOff:'Libero',dtHint:'Ferie, malattia o cambio turno: segna il giorno a mano e l’obiettivo viene ricalcolato.',
   save:'Salva',saveNext:'Salva e apri il giorno successivo',delEntry:'Elimina voce',
   exact:'Esattamente come previsto',overBy:'{x} oltre l’obiettivo',underBy:'{x} all’obiettivo',
   saved:'Salvato',deleted:'Voce eliminata',cleared:'Dati eliminati',copied:'Report copiato',selectCopy:'Seleziona il testo e copialo',
@@ -119,6 +122,7 @@ uk:{
   hint:'Натисніть на день, щоб ввести години.',
   cancel:'Скасувати',done:'Готово',inputMode:'Спосіб введення',modeDur:'Тривалість',modeSpan:'Початок і кінець',
   start:'Початок',end:'Кінець',brk:'Перерва, хвилин',notePh:'Нотатка (необов’язково)',
+  dayType:'День',dtAuto:'За графіком',dtWork:'Робочий',dtOff:'Вихідний',dtHint:'Відпустка, лікарняний або обмін зміною: позначте день вручну, і норма перерахується.',
   save:'Зберегти',saveNext:'Зберегти й відкрити наступний день',delEntry:'Видалити запис',
   exact:'Рівно за нормою',overBy:'Понад норму на {x}',underBy:'До норми {x}',
   saved:'Збережено',deleted:'Запис видалено',cleared:'Дані видалено',copied:'Звіт скопійовано',selectCopy:'Виділіть текст і скопіюйте',
@@ -139,7 +143,7 @@ uk:{
 }
 };
 
-var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:''},lang:'auto',cur:'auto'},sample:false};
+var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:''},lang:'auto',cur:'auto'},sample:false,marks:{}};
 var persist=true;
 var state={view:'month',cursor:today()};
 var ed=null, sheetKind=null, closeTimer=null, toastTimer=null;
@@ -222,6 +226,11 @@ function curName(code){
   try{var n=new Intl.DisplayNames([loc],{type:'currency'}).of(code);return n?cap(n):code}catch(e){return code}
 }
 function isoWeek(d){var x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));var day=x.getUTCDay()||7;x.setUTCDate(x.getUTCDate()+4-day);var y0=new Date(Date.UTC(x.getUTCFullYear(),0,1));return Math.ceil(((x-y0)/864e5+1)/7)}
+function cleanMarks(m){
+  var out={};
+  if(m&&typeof m==='object')Object.keys(m).forEach(function(k){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&(m[k]==='w'||m[k]==='o'))out[k]=m[k]});
+  return out;
+}
 function cleanSched(x){
   x=x||{};
   var on=parseInt(x.on,10),off=parseInt(x.off,10);
@@ -229,6 +238,9 @@ function cleanSched(x){
 }
 function dayNo(d){return Math.round(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
 function isWork(d){
+  var mk=store.marks[key(d)];
+  if(mk==='w')return true;
+  if(mk==='o')return false;
   var sc=store.settings.sched;
   if(sc&&sc.mode==='cycle'&&sc.start){
     var n=(dayNo(d)-dayNo(parseKey(sc.start)))%(sc.on+sc.off);
@@ -243,7 +255,7 @@ function noteOf(e){return e?(e.note||(e.sk?t('sample'+e.sk):'')):''}
 
 /* ---------- хранилище ---------- */
 function seed(){
-  store.entries={};store.sample=true;
+  store.entries={};store.marks={};store.sample=true;
   var pattern=[480,495,450,510,480,465,540,420,480,495,450,525];
   var now=today(),i=0;
   for(var n=1;n<=24;n++){
@@ -263,7 +275,7 @@ function load(){
   if(raw){
     try{
       var o=JSON.parse(raw),s=o.settings||{};
-      store.entries=o.entries||{};store.sample=!!o.sample;
+      store.entries=o.entries||{};store.sample=!!o.sample;store.marks=cleanMarks(o.marks);
       store.settings={
         norm:isFinite(s.norm)?s.norm:480,
         rate:isFinite(s.rate)?s.rate:0,
@@ -424,6 +436,7 @@ function editorHTML(){
     '<label class="frow" for="edStart"><span>'+esc(t('start'))+'</span><input id="edStart" type="time" value="'+ed.start+'"></label>'+
     '<label class="frow" for="edEnd"><span>'+esc(t('end'))+'</span><input id="edEnd" type="time" value="'+ed.end+'"></label>'+
     '<label class="frow" for="edBrk"><span>'+esc(t('brk'))+'</span><input id="edBrk" type="number" inputmode="numeric" min="0" max="600" step="5" value="'+ed.brk+'"></label></div>'+
+  '<div class="gl">'+esc(t('dayType'))+'</div><div class="seg wide" role="group" aria-label="'+esc(t('dayType'))+'">'+[['','dtAuto'],['w','dtWork'],['o','dtOff']].map(function(x){return '<button data-mark="'+x[0]+'" aria-pressed="'+(ed.mark===x[0])+'">'+esc(t(x[1]))+'</button>'}).join('')+'</div><div class="fnote" style="margin-top:-8px">'+esc(t('dtHint'))+'</div>'+
   '<div class="group"><label class="frow wideinp" for="edNote"><input id="edNote" type="text" maxlength="120" placeholder="'+esc(t('notePh'))+'" value="'+esc(ed.note)+'"></label></div>'+
   '<div class="acts"><button class="btn primary" data-a="save">'+esc(t('save'))+'</button><button class="btn" data-a="savenext">'+esc(t('saveNext'))+'</button>'+(exists?'<button class="btn danger" data-a="del">'+esc(t('delEntry'))+'</button>':'')+'</div></div>';
 }
@@ -441,10 +454,11 @@ function updateEditor(){
 function openEditor(k){
   var e=store.entries[k],d=parseKey(k);
   ed={key:k,mode:(e&&e.mode)||'dur',min:e?e.min:(isWork(d)?store.settings.norm:0),
-      start:(e&&e.start)||'09:00',end:(e&&e.end)||'17:30',brk:(e&&e.brk!=null)?e.brk:30,note:e?(e.note||''):''};
+      start:(e&&e.start)||'09:00',end:(e&&e.end)||'17:30',brk:(e&&e.brk!=null)?e.brk:30,note:e?(e.note||''):'',mark:store.marks[k]||''};
   openSheet(editorHTML(),'editor');updateEditor();
 }
 function saveEntry(){
+  if(ed.mark)store.marks[ed.key]=ed.mark;else delete store.marks[ed.key];
   var m=curMin(),note=ed.note.trim(),old=store.entries[ed.key];
   if(m<=0&&!note){delete store.entries[ed.key]}
   else{
@@ -479,7 +493,7 @@ function schedHTML(){
   var h='<div class="gl">'+esc(t('schedule'))+'</div>'+
   '<div class="seg wide"><button data-schmode="week" aria-pressed="'+!cy+'">'+esc(t('schWeek'))+'</button><button data-schmode="cycle" aria-pressed="'+cy+'">'+esc(t('schCycle'))+'</button></div>';
   if(cy){
-    h+='<div class="chips">'+['2/2','3/3','4/2','5/2','1/2','7/7'].map(function(p){var q=p.split('/');var on=sc.on==q[0]&&sc.off==q[1];return '<button class="chip'+(on?' on':'')+'" data-sch="'+p+'" aria-pressed="'+on+'">'+p+'</button>'}).join('')+'</div>'+
+    h+='<div class="pchips">'+['2/2','3/3','4/2','5/2','1/2','7/7'].map(function(p){var q=p.split('/');var on=sc.on==q[0]&&sc.off==q[1];return '<button class="pchip'+(on?' on':'')+'" data-sch="'+p+'" aria-pressed="'+on+'">'+p+'</button>'}).join('')+'</div>'+
     '<div class="group"><label class="frow" for="setOn"><span>'+esc(t('schOn'))+'</span><input id="setOn" type="number" inputmode="numeric" min="1" max="31" step="1" value="'+sc.on+'"></label>'+
     '<label class="frow" for="setOff"><span>'+esc(t('schOff'))+'</span><input id="setOff" type="number" inputmode="numeric" min="1" max="31" step="1" value="'+sc.off+'"></label>'+
     '<label class="frow" for="setStart"><span>'+esc(t('schStart'))+'</span><input id="setStart" type="date" value="'+esc(sc.start)+'"></label></div>'+
@@ -534,7 +548,7 @@ function copyReport(){
 /* ---------- резервная копия ---------- */
 var pendingRestore=null;
 function backupJSON(){
-  return JSON.stringify({app:'work-calendar',version:1,exportedAt:new Date().toISOString(),entries:store.entries,settings:store.settings},null,2);
+  return JSON.stringify({app:'work-calendar',version:1,exportedAt:new Date().toISOString(),entries:store.entries,marks:store.marks,settings:store.settings},null,2);
 }
 function exportBackup(){
   var json=backupJSON(),name='worktime-backup-'+key(today())+'.json';
@@ -580,6 +594,7 @@ function cleanBackup(o){
     lang:(s.lang==='auto'||D[s.lang])?s.lang:'auto',
     cur:(s.cur==='auto'||CURS.indexOf(s.cur)>-1)?s.cur:'auto'
   };
+  out.marks=cleanMarks(o.marks);
   out.count=n;
   return out;
 }
@@ -601,7 +616,7 @@ function onRestoreFile(input){
 }
 function applyRestore(){
   if(!pendingRestore)return;
-  store.entries=pendingRestore.entries;store.settings=pendingRestore.settings;store.sample=false;
+  store.entries=pendingRestore.entries;store.marks=pendingRestore.marks||{};store.settings=pendingRestore.settings;store.sample=false;
   pendingRestore=null;save();applyLocale();render();
   if(sheetKind==='settings')sheet.innerHTML=settingsHTML();
   toast(t('restoreDone'));
@@ -616,7 +631,7 @@ function relocalize(focusId){
 
 /* ---------- события ---------- */
 document.addEventListener('click',function(ev){
-  var el=ev.target.closest('[data-a],[data-day],[data-week],[data-view],[data-step],[data-preset],[data-mode],[data-wd],[data-schmode],[data-sch]');
+  var el=ev.target.closest('[data-a],[data-day],[data-week],[data-view],[data-step],[data-preset],[data-mode],[data-wd],[data-schmode],[data-sch],[data-mark]');
   if(!el)return;
   var ds=el.dataset;
   if(ds.view){
@@ -632,6 +647,11 @@ document.addEventListener('click',function(ev){
   if(ds.step&&ed){ed.min=Math.max(0,Math.min(1440,ed.min+Number(ds.step)));updateEditor();return}
   if(ds.preset&&ed){ed.min=Number(ds.preset)*60;updateEditor();return}
   if(ds.mode&&ed){ed.mode=ds.mode;updateEditor();return}
+  if(ds.mark!==undefined&&ed){
+    ed.mark=ds.mark;
+    Array.prototype.forEach.call(sheet.querySelectorAll('[data-mark]'),function(b){b.setAttribute('aria-pressed',String(b.dataset.mark===ed.mark))});
+    return;
+  }
   if(ds.schmode){
     var sc=store.settings.sched;sc.mode=ds.schmode;
     if(sc.mode==='cycle'&&!sc.start)sc.start=key(today());
@@ -662,7 +682,7 @@ document.addEventListener('click',function(ev){
     case 'restoreyes':applyRestore();break;
     case 'restoreno':pendingRestore=null;var rb=$('restoreBox');if(rb)rb.innerHTML='';break;
     case 'clearall':
-      if(el.dataset.sure){store.entries={};store.sample=false;save();render();closeSheet();toast(t('cleared'))}
+      if(el.dataset.sure){store.entries={};store.marks={};store.sample=false;save();render();closeSheet();toast(t('cleared'))}
       else{el.dataset.sure='1';el.textContent=t('clearSure');setTimeout(function(){if(el.isConnected){delete el.dataset.sure;el.textContent=t('clearAll')}},4000)}
       break;
   }
