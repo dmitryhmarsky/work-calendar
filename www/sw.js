@@ -1,5 +1,5 @@
 // Офлайн-кэш: сначала из кэша, в фоне обновляется из сети
-var V='work-calendar-v5';
+var V='work-calendar-v6';
 var FILES=['./','index.html','app.js','manifest.webmanifest','icon-192.png','icon-512.png','apple-touch-icon.png'];
 self.addEventListener('install',function(e){
   e.waitUntil(caches.open(V).then(function(c){return c.addAll(FILES)}).then(function(){return self.skipWaiting()}));
