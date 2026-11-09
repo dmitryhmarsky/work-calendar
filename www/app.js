@@ -27,7 +27,7 @@ ru:{
   save:'Сохранить',saveNext:'Сохранить и открыть следующий день',delEntry:'Удалить запись',
   exact:'Ровно по норме',overBy:'Сверх нормы на {x}',underBy:'До нормы {x}',
   saved:'Сохранено',deleted:'Запись удалена',cleared:'Данные удалены',copied:'Отчёт скопирован',selectCopy:'Выделите текст и скопируйте',
-  schedule:'График',schWeek:'По дням недели',schCycle:'Сменный',schOn:'Рабочих дней подряд',schOff:'Выходных подряд',schStart:'Первый рабочий день цикла',schPresets:'Готовые графики',schHint:'Выберите любой день, с которого начался ваш рабочий блок. Дальше график считается сам, в прошлое и в будущее.',schMonth:'Рабочих дней в этом месяце: {n}, норма {x}',
+  schedule:'График',schWeek:'По дням',schCycle:'Сменный',schHours:'По часам',schHoursLbl:'Норма часов в месяц',schHintH:'Укажите, сколько часов нужно отработать за месяц. Норма недели считается пропорционально дням, а статистика сравнивается с этой цифрой.',schMonthH:'Норма на этот месяц: {x}',schOn:'Рабочих дней подряд',schOff:'Выходных подряд',schStart:'Первый рабочий день цикла',schPresets:'Готовые графики',schHint:'Выберите любой день, с которого начался ваш рабочий блок. Дальше график считается сам, в прошлое и в будущее.',schMonth:'Рабочих дней в этом месяце: {n}, норма {x}',
   normPerDay:'Норма в день, часов',rate:'Ставка в час, {c}',rateNone:'не задана',workDays:'Рабочие дни',
   copyReport:'Скопировать отчёт: {p}',periodMonth:'месяц',periodWeek:'неделя',repAria:'Текст отчёта',
   clearAll:'Очистить все данные',clearSure:'Нажмите ещё раз, чтобы удалить всё',footer:'Данные хранятся на этом устройстве.',
@@ -60,7 +60,7 @@ en:{
   save:'Save',saveNext:'Save and open next day',delEntry:'Delete entry',
   exact:'Exactly on target',overBy:'{x} over target',underBy:'{x} to target',
   saved:'Saved',deleted:'Entry deleted',cleared:'Data deleted',copied:'Report copied',selectCopy:'Select the text and copy it',
-  schedule:'Schedule',schWeek:'By weekday',schCycle:'Shifts',schOn:'Days on in a row',schOff:'Days off in a row',schStart:'First working day of a cycle',schPresets:'Common schedules',schHint:'Pick any day your working block started on. The schedule is then worked out automatically, backward and forward.',schMonth:'Working days this month: {n}, target {x}',
+  schedule:'Schedule',schWeek:'Weekdays',schCycle:'Shifts',schHours:'By hours',schHoursLbl:'Target hours per month',schHintH:'Enter how many hours you need to work per month. The weekly target is split in proportion to days, and your stats are compared to this number.',schMonthH:'Target for this month: {x}',schOn:'Days on in a row',schOff:'Days off in a row',schStart:'First working day of a cycle',schPresets:'Common schedules',schHint:'Pick any day your working block started on. The schedule is then worked out automatically, backward and forward.',schMonth:'Working days this month: {n}, target {x}',
   normPerDay:'Daily target, hours',rate:'Hourly rate, {c}',rateNone:'not set',workDays:'Working days',
   copyReport:'Copy report: {p}',periodMonth:'month',periodWeek:'week',repAria:'Report text',
   clearAll:'Delete all data',clearSure:'Tap again to delete everything',footer:'Data is stored on this device.',
@@ -93,7 +93,7 @@ it:{
   save:'Salva',saveNext:'Salva e apri il giorno successivo',delEntry:'Elimina voce',
   exact:'Esattamente come previsto',overBy:'{x} oltre l’obiettivo',underBy:'{x} all’obiettivo',
   saved:'Salvato',deleted:'Voce eliminata',cleared:'Dati eliminati',copied:'Report copiato',selectCopy:'Seleziona il testo e copialo',
-  schedule:'Turni',schWeek:'Per giorni della settimana',schCycle:'A turni',schOn:'Giorni lavorativi di fila',schOff:'Giorni di riposo di fila',schStart:'Primo giorno di lavoro del ciclo',schPresets:'Turni comuni',schHint:'Scegli un giorno qualsiasi in cui è iniziato il tuo blocco di lavoro. Il calendario si calcola da solo, nel passato e nel futuro.',schMonth:'Giorni lavorativi questo mese: {n}, obiettivo {x}',
+  schedule:'Turni',schWeek:'Settimana',schCycle:'Turni',schHours:'A ore',schHoursLbl:'Ore obiettivo al mese',schHintH:'Indica quante ore devi lavorare al mese. L’obiettivo settimanale è proporzionale ai giorni e le statistiche si confrontano con questo valore.',schMonthH:'Obiettivo di questo mese: {x}',schOn:'Giorni lavorativi di fila',schOff:'Giorni di riposo di fila',schStart:'Primo giorno di lavoro del ciclo',schPresets:'Turni comuni',schHint:'Scegli un giorno qualsiasi in cui è iniziato il tuo blocco di lavoro. Il calendario si calcola da solo, nel passato e nel futuro.',schMonth:'Giorni lavorativi questo mese: {n}, obiettivo {x}',
   normPerDay:'Obiettivo giornaliero, ore',rate:'Tariffa oraria, {c}',rateNone:'non impostata',workDays:'Giorni lavorativi',
   copyReport:'Copia report: {p}',periodMonth:'mese',periodWeek:'settimana',repAria:'Testo del report',
   clearAll:'Elimina tutti i dati',clearSure:'Tocca ancora per eliminare tutto',footer:'I dati sono salvati su questo dispositivo.',
@@ -126,7 +126,7 @@ uk:{
   save:'Зберегти',saveNext:'Зберегти й відкрити наступний день',delEntry:'Видалити запис',
   exact:'Рівно за нормою',overBy:'Понад норму на {x}',underBy:'До норми {x}',
   saved:'Збережено',deleted:'Запис видалено',cleared:'Дані видалено',copied:'Звіт скопійовано',selectCopy:'Виділіть текст і скопіюйте',
-  schedule:'Графік',schWeek:'За днями тижня',schCycle:'Змінний',schOn:'Робочих днів поспіль',schOff:'Вихідних поспіль',schStart:'Перший робочий день циклу',schPresets:'Готові графіки',schHint:'Виберіть будь-який день, з якого почався ваш робочий блок. Далі графік рахується сам, у минуле й майбутнє.',schMonth:'Робочих днів цього місяця: {n}, норма {x}',
+  schedule:'Графік',schWeek:'За днями',schCycle:'Змінний',schHours:'За годинами',schHoursLbl:'Норма годин на місяць',schHintH:'Вкажіть, скільки годин потрібно відпрацювати за місяць. Норма тижня рахується пропорційно до днів, а статистика порівнюється з цією цифрою.',schMonthH:'Норма на цей місяць: {x}',schOn:'Робочих днів поспіль',schOff:'Вихідних поспіль',schStart:'Перший робочий день циклу',schPresets:'Готові графіки',schHint:'Виберіть будь-який день, з якого почався ваш робочий блок. Далі графік рахується сам, у минуле й майбутнє.',schMonth:'Робочих днів цього місяця: {n}, норма {x}',
   normPerDay:'Норма на день, годин',rate:'Ставка за годину, {c}',rateNone:'не задано',workDays:'Робочі дні',
   copyReport:'Скопіювати звіт: {p}',periodMonth:'місяць',periodWeek:'тиждень',repAria:'Текст звіту',
   clearAll:'Видалити всі дані',clearSure:'Натисніть ще раз, щоб видалити все',footer:'Дані зберігаються на цьому пристрої.',
@@ -143,7 +143,7 @@ uk:{
 }
 };
 
-var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:''},lang:'auto',cur:'auto'},sample:false,marks:{}};
+var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:'',hours:160},lang:'auto',cur:'auto'},sample:false,marks:{}};
 var persist=true;
 var state={view:'month',cursor:today()};
 var ed=null, sheetKind=null, closeTimer=null, toastTimer=null;
@@ -234,7 +234,8 @@ function cleanMarks(m){
 function cleanSched(x){
   x=x||{};
   var on=parseInt(x.on,10),off=parseInt(x.off,10);
-  return{mode:x.mode==='cycle'?'cycle':'week',on:on>=1&&on<=31?on:3,off:off>=1&&off<=31?off:3,start:/^\d{4}-\d{2}-\d{2}$/.test(x.start||'')?x.start:''};
+  var hh=parseFloat(x.hours);
+  return{mode:(x.mode==='cycle'||x.mode==='hours')?x.mode:'week',hours:hh>0&&hh<=744?hh:160,on:on>=1&&on<=31?on:3,off:off>=1&&off<=31?off:3,start:/^\d{4}-\d{2}-\d{2}$/.test(x.start||'')?x.start:''};
 }
 function dayNo(d){return Math.round(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
 function isWork(d){
@@ -250,7 +251,13 @@ function isWork(d){
   return store.settings.days.indexOf(d.getDay())>-1;
 }
 function workDays(a,b){var c=0;for(var d=a;d<=b;d=addDays(d,1))if(isWork(d))c++;return c}
-function stats(a,b){var total=0,days=0;for(var d=a;d<=b;d=addDays(d,1)){var e=store.entries[key(d)];if(e&&e.min>0){total+=e.min;days++}}return{total:total,days:days,goal:workDays(a,b)*store.settings.norm}}
+function hoursGoal(a,b){
+  var H=store.settings.sched.hours*60,g=0;
+  for(var d=a;d<=b;d=addDays(d,1))g+=H/new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  return Math.round(g);
+}
+function goalFor(a,b){return store.settings.sched.mode==='hours'?hoursGoal(a,b):workDays(a,b)*store.settings.norm}
+function stats(a,b){var total=0,days=0;for(var d=a;d<=b;d=addDays(d,1)){var e=store.entries[key(d)];if(e&&e.min>0){total+=e.min;days++}}return{total:total,days:days,goal:goalFor(a,b)}}
 function noteOf(e){return e?(e.note||(e.sk?t('sample'+e.sk):'')):''}
 
 /* ---------- хранилище ---------- */
@@ -486,12 +493,17 @@ function curOptions(){
 }
 function schedPrev(){
   var c=period().from,m=state.cursor,a=new Date(m.getFullYear(),m.getMonth(),1),b=new Date(m.getFullYear(),m.getMonth()+1,0);
+  if(store.settings.sched.mode==='hours')return t('schMonthH',{x:fmtLong(hoursGoal(a,b))});
   var n=workDays(a,b);return t('schMonth',{n:n,x:fmtLong(n*store.settings.norm)});
 }
 function schedHTML(){
-  var sc=store.settings.sched,cy=sc.mode==='cycle';
+  var sc=store.settings.sched,cy=sc.mode==='cycle',hr=sc.mode==='hours';
   var h='<div class="gl">'+esc(t('schedule'))+'</div>'+
-  '<div class="seg wide"><button data-schmode="week" aria-pressed="'+!cy+'">'+esc(t('schWeek'))+'</button><button data-schmode="cycle" aria-pressed="'+cy+'">'+esc(t('schCycle'))+'</button></div>';
+  '<div class="seg wide"><button data-schmode="week" aria-pressed="'+(!cy&&!hr)+'">'+esc(t('schWeek'))+'</button><button data-schmode="cycle" aria-pressed="'+cy+'">'+esc(t('schCycle'))+'</button><button data-schmode="hours" aria-pressed="'+hr+'">'+esc(t('schHours'))+'</button></div>';
+  if(hr){
+    h+='<div class="group"><label class="frow" for="setHours"><span>'+esc(t('schHoursLbl'))+'</span><input id="setHours" type="number" inputmode="decimal" min="1" max="744" step="1" value="'+sc.hours+'"></label></div>'+
+    '<div class="fnote">'+esc(t('schHintH'))+'</div>';
+  }
   if(cy){
     h+='<div class="pchips">'+['2/2','3/3','4/2','5/2','1/2','7/7'].map(function(p){var q=p.split('/');var on=sc.on==q[0]&&sc.off==q[1];return '<button class="pchip'+(on?' on':'')+'" data-sch="'+p+'" aria-pressed="'+on+'">'+p+'</button>'}).join('')+'</div>'+
     '<div class="group"><label class="frow" for="setOn"><span>'+esc(t('schOn'))+'</span><input id="setOn" type="number" inputmode="numeric" min="1" max="31" step="1" value="'+sc.on+'"></label>'+
@@ -513,7 +525,7 @@ function settingsHTML(){
   '<div class="fnote">'+esc(t('curNote'))+'</div>'+
   '<div class="group"><label class="frow" for="setNorm"><span>'+esc(t('normPerDay'))+'</span><input id="setNorm" type="number" inputmode="decimal" min="0" max="24" step="0.5" value="'+(s.norm/60)+'"></label>'+
   '<label class="frow" for="setRate"><span>'+esc(t('rate',{c:curSymbol()}))+'</span><input id="setRate" type="number" inputmode="decimal" min="0" step="0.5" placeholder="'+esc(t('rateNone'))+'" value="'+(s.rate>0?s.rate:'')+'"></label></div>'+
-  schedHTML()+(s.sched.mode==='cycle'?'':weekdaysHTML(s))+
+  schedHTML()+(s.sched.mode==='week'?weekdaysHTML(s):'')+
   '<div class="gl">'+esc(t('backup'))+'</div><p class="fnote" style="margin-top:0">'+esc(bk('Note'))+'</p>'+
   '<div class="acts"><button class="btn" data-a="backup">'+esc(bk('Save'))+'</button>'+
   '<label class="btn" for="restoreFile">'+esc(t('backupRestore'))+'</label><input id="restoreFile" type="file" accept="application/json,.json" hidden>'+
@@ -701,6 +713,10 @@ document.addEventListener('input',function(ev){
   else if(id==='setOn'||id==='setOff'){
     var k=parseInt(v,10);
     if(k>=1&&k<=31){store.settings.sched[id==='setOn'?'on':'off']=k;save();render();var pv=$('schPrev');if(pv)pv.textContent=schedPrev()}
+  }
+  else if(id==='setHours'){
+    var hv=parseFloat(String(v).replace(',','.'));
+    if(isFinite(hv)&&hv>0&&hv<=744){store.settings.sched.hours=hv;save();render();var pv4=$('schPrev');if(pv4)pv4.textContent=schedPrev()}
   }
   else if(id==='setStart'){
     if(/^\d{4}-\d{2}-\d{2}$/.test(v)){store.settings.sched.start=v;save();render();var pv2=$('schPrev');if(pv2)pv2.textContent=schedPrev()}
