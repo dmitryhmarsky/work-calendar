@@ -38,6 +38,8 @@ ru:{
   backupNote:'Файл копии можно сохранить в Google Drive: выберите Drive в меню «Поделиться». Чтобы вернуть данные, выберите этот файл.',
   backupShareTitle:'Резервная копия WorkTime',backupSaved:'Файл сохранён',backupFail:'Не удалось сохранить копию',
   restoreBad:'Это не файл копии приложения',restoreAsk:'Найдено записей: {n}. Заменить текущие данные?',restoreYes:'Заменить',restoreNo:'Отмена',restoreDone:'Данные восстановлены',
+  exportCsv:'Экспорт в таблицу (CSV): {p}',csvHead:'Дата|День недели|Часы|Начало|Конец|Перерыв, мин|Тип дня|Заметка',csvWork:'рабочий',csvOff:'выходной',csvTotal:'Итого',
+  about:'О приложении',version:'Версия',privacy:'Политика конфиденциальности',
   backupSaveDrive:'Сохранить в Google Drive',backupSaveIcloud:'Сохранить в iCloud',
   backupNoteDrive:'В открывшемся меню выберите «Диск» (Google Drive). Чтобы вернуть данные, нажмите «Восстановить из файла» и выберите сохранённый файл.',
   backupNoteIcloud:'В открывшемся меню выберите «Сохранить в Файлы» и папку iCloud Drive. Чтобы вернуть данные, нажмите «Восстановить из файла» и выберите сохранённый файл.'
@@ -71,6 +73,8 @@ en:{
   backupNote:'You can save the backup file to Google Drive: pick Drive in the Share menu. To get your data back, choose that file.',
   backupShareTitle:'WorkTime backup',backupSaved:'File saved',backupFail:'Could not save the backup',
   restoreBad:'This is not a backup file from this app',restoreAsk:'{n} entries found. Replace the current data?',restoreYes:'Replace',restoreNo:'Cancel',restoreDone:'Data restored',
+  exportCsv:'Export to spreadsheet (CSV): {p}',csvHead:'Date|Weekday|Hours|Start|End|Break, min|Day type|Note',csvWork:'working',csvOff:'day off',csvTotal:'Total',
+  about:'About',version:'Version',privacy:'Privacy policy',
   backupSaveDrive:'Save to Google Drive',backupSaveIcloud:'Save to iCloud',
   backupNoteDrive:'In the menu that opens, choose Drive (Google Drive). To get your data back, tap "Restore from file" and pick the saved file.',
   backupNoteIcloud:'In the menu that opens, choose "Save to Files" and the iCloud Drive folder. To get your data back, tap "Restore from file" and pick the saved file.'
@@ -104,6 +108,8 @@ it:{
   backupNote:'Puoi salvare il file in Google Drive: scegli Drive nel menu Condividi. Per recuperare i dati, scegli quel file.',
   backupShareTitle:'Copia di WorkTime',backupSaved:'File salvato',backupFail:'Impossibile salvare la copia',
   restoreBad:'Questo non è un file di copia di questa app',restoreAsk:'Trovate {n} voci. Sostituire i dati attuali?',restoreYes:'Sostituisci',restoreNo:'Annulla',restoreDone:'Dati ripristinati',
+  exportCsv:'Esporta in tabella (CSV): {p}',csvHead:'Data|Giorno|Ore|Inizio|Fine|Pausa, min|Tipo di giorno|Nota',csvWork:'lavorativo',csvOff:'libero',csvTotal:'Totale',
+  about:'Informazioni',version:'Versione',privacy:'Informativa sulla privacy',
   backupSaveDrive:'Salva su Google Drive',backupSaveIcloud:'Salva su iCloud',
   backupNoteDrive:'Nel menu che si apre scegli Drive (Google Drive). Per recuperare i dati, tocca "Ripristina da file" e scegli il file salvato.',
   backupNoteIcloud:'Nel menu che si apre scegli "Salva su File" e la cartella iCloud Drive. Per recuperare i dati, tocca "Ripristina da file" e scegli il file salvato.'
@@ -137,6 +143,8 @@ uk:{
   backupNote:'Файл копії можна зберегти на Google Drive: виберіть Drive в меню «Поділитися». Щоб повернути дані, виберіть цей файл.',
   backupShareTitle:'Резервна копія WorkTime',backupSaved:'Файл збережено',backupFail:'Не вдалося зберегти копію',
   restoreBad:'Це не файл копії цього застосунку',restoreAsk:'Знайдено записів: {n}. Замінити поточні дані?',restoreYes:'Замінити',restoreNo:'Скасувати',restoreDone:'Дані відновлено',
+  exportCsv:'Експорт у таблицю (CSV): {p}',csvHead:'Дата|День тижня|Години|Початок|Кінець|Перерва, хв|Тип дня|Нотатка',csvWork:'робочий',csvOff:'вихідний',csvTotal:'Разом',
+  about:'Про застосунок',version:'Версія',privacy:'Політика конфіденційності',
   backupSaveDrive:'Зберегти на Google Drive',backupSaveIcloud:'Зберегти в iCloud',
   backupNoteDrive:'У меню, що відкриється, виберіть «Диск» (Google Drive). Щоб повернути дані, натисніть «Відновити з файлу» й виберіть збережений файл.',
   backupNoteIcloud:'У меню, що відкриється, виберіть «Зберегти у Файли» й теку iCloud Drive. Щоб повернути дані, натисніть «Відновити з файлу» й виберіть збережений файл.'
@@ -145,6 +153,7 @@ uk:{
 
 var store={entries:{},settings:{norm:480,rate:0,days:[1,2,3,4,5],sched:{mode:'week',on:3,off:3,start:'',hours:160},lang:'auto',cur:'auto'},sample:false,marks:{}};
 var persist=true;
+var appVersion='',PRIVACY_URL='https://dmitryhmarsky.github.io/work-calendar/privacy.html';
 var state={view:'month',cursor:today()};
 var ed=null, sheetKind=null, closeTimer=null, toastTimer=null;
 var L='en', loc='en-GB', cur='EUR';
@@ -531,8 +540,12 @@ function settingsHTML(){
   '<label class="btn" for="restoreFile">'+esc(t('backupRestore'))+'</label><input id="restoreFile" type="file" accept="application/json,.json" hidden>'+
   '<div id="restoreBox"></div></div>'+
   '<div class="acts" style="margin-top:12px"><button class="btn" data-a="copy">'+esc(t('copyReport',{p:state.view==='month'?t('periodMonth'):t('periodWeek')}))+'</button>'+
+  '<button class="btn" data-a="csv">'+esc(t('exportCsv',{p:state.view==='month'?t('periodMonth'):t('periodWeek')}))+'</button>'+
   '<textarea id="rep" class="rep" readonly hidden aria-label="'+esc(t('repAria'))+'"></textarea>'+
   '<button class="btn danger" data-a="clearall" id="clr">'+esc(t('clearAll'))+'</button></div>'+
+  '<div class="gl" style="margin-top:18px">'+esc(t('about'))+'</div>'+
+  '<div class="group">'+(appVersion?'<div class="frow"><span>'+esc(t('version'))+'</span><span class="fval">'+esc(appVersion)+'</span></div>':'')+
+  '<a class="frow link" href="'+PRIVACY_URL+'" target="_blank" rel="noopener"><span>'+esc(t('privacy'))+'</span><span class="chev" aria-hidden="true">›</span></a></div>'+
   '<div class="brand"><img src="icon-192.png" alt="" width="48" height="48"><b>WorkTime</b></div>'+
   '<p class="foot">'+esc(t('footer'))+'</p></div>';
 }
@@ -562,26 +575,48 @@ var pendingRestore=null;
 function backupJSON(){
   return JSON.stringify({app:'work-calendar',version:1,exportedAt:new Date().toISOString(),entries:store.entries,marks:store.marks,settings:store.settings},null,2);
 }
-function exportBackup(){
-  var json=backupJSON(),name='worktime-backup-'+key(today())+'.json';
+function shareFile(name,text,mime,dialogTitle){
   var C=window.Capacitor,P=C&&C.Plugins,native=!!(C&&C.isNativePlatform&&C.isNativePlatform());
   if(native&&P&&P.Filesystem&&P.Share){
-    P.Filesystem.writeFile({path:name,data:json,directory:'CACHE',encoding:'utf8'}).then(function(r){
-      return P.Share.share({title:name,files:[r.uri],dialogTitle:t('backupShareTitle')});
+    P.Filesystem.writeFile({path:name,data:text,directory:'CACHE',encoding:'utf8'}).then(function(r){
+      return P.Share.share({title:name,files:[r.uri],dialogTitle:dialogTitle});
     }).catch(function(e){if(!/cancel/i.test(String((e&&e.message)||e)))toast(t('backupFail'))});
     return;
   }
   try{
-    var file=new File([json],name,{type:'application/json'});
+    var file=new File([text],name,{type:mime});
     if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:name}).catch(function(){});return}
   }catch(e){}
   try{
     var a=document.createElement('a');
-    a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download=name;
+    a.href=URL.createObjectURL(new Blob([text],{type:mime}));a.download=name;
     document.body.appendChild(a);a.click();
     setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
     toast(t('backupSaved'));
   }catch(e){toast(t('backupFail'))}
+}
+function exportBackup(){
+  shareFile('worktime-backup-'+key(today())+'.json',backupJSON(),'application/json',t('backupShareTitle'));
+}
+/* ---------- экспорт в CSV (Excel, Google Таблицы) ---------- */
+function csvText(){
+  var per=period(),dec='.';
+  try{dec=(1.5).toLocaleString(loc).charAt(1)}catch(e){}
+  var sep=dec===','?';':',';
+  function cell(v){v=String(v==null?'':v);return /[";,\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}
+  function hrs(m){return (Math.round(m/60*100)/100).toFixed(2).replace('.',dec)}
+  var rows=[t('csvHead').split('|')],total=0;
+  for(var d=per.from;d<=per.to;d=addDays(d,1)){
+    var e=store.entries[key(d)],min=e&&e.min>0?e.min:0,sp=e&&e.mode==='span';
+    total+=min;
+    rows.push([key(d),wdLong(d),min?hrs(min):'',sp?e.start:'',sp?e.end:'',sp?e.brk:'',isWork(d)?t('csvWork'):t('csvOff'),noteOf(e)]);
+  }
+  rows.push([t('csvTotal'),'',hrs(total),'','','','','']);
+  return '﻿'+rows.map(function(r){return r.map(cell).join(sep)}).join('\r\n')+'\r\n';
+}
+function exportCsv(){
+  var per=period(),name='worktime-'+(state.view==='month'?key(per.from).slice(0,7):key(per.from)+'_'+key(per.to))+'.csv';
+  shareFile(name,csvText(),'text/csv',name);
 }
 function cleanBackup(o){
   if(!o||o.app!=='work-calendar'||!o.entries||typeof o.entries!=='object')return null;
@@ -690,6 +725,7 @@ document.addEventListener('click',function(ev){
     case 'del':if(ed){delete store.entries[ed.key];save();render();closeSheet();toast(t('deleted'))}break;
     case 'clearsample':store.entries={};store.sample=false;save();render();break;
     case 'copy':copyReport();break;
+    case 'csv':exportCsv();break;
     case 'backup':exportBackup();break;
     case 'restoreyes':applyRestore();break;
     case 'restoreno':pendingRestore=null;var rb=$('restoreBox');if(rb)rb.innerHTML='';break;
@@ -737,6 +773,21 @@ main.addEventListener('touchend',function(e){
   var p=e.changedTouches[0],dx=p.clientX-tx,dy=p.clientY-ty;
   if(Math.abs(dx)>70&&Math.abs(dy)<40)shift(dx<0?1:-1);
 },{passive:true});
+
+/* ---------- Android: кнопка «Назад», версия ---------- */
+(function(){
+  var C=window.Capacitor,A=C&&C.Plugins&&C.Plugins.App;
+  if(!A||!(C.isNativePlatform&&C.isNativePlatform()))return;
+  try{
+    A.getInfo().then(function(i){appVersion=i.version+(i.build?' ('+i.build+')':'');if(sheetKind==='settings'&&!pendingRestore)sheet.innerHTML=settingsHTML()}).catch(function(){});
+    A.addListener('backButton',function(){
+      if(sheetKind){closeSheet();return}
+      var now=today(),c=state.cursor;
+      if(state.view!=='month'||c.getFullYear()!==now.getFullYear()||c.getMonth()!==now.getMonth()){state.view='month';state.cursor=now;render();window.scrollTo(0,0);return}
+      A.exitApp();
+    });
+  }catch(e){}
+})();
 
 load();
 if(store.sample)state.view='week';
